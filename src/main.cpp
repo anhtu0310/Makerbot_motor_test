@@ -33,14 +33,14 @@ void setPWM(int chan1, int chan2, bool state, uint16_t val)
   if (state)
   {
     pwm.setPWM(chan1, 0, val);
-    pwm.setPWM(chan2, 4096, 0);
+    pwm.setPWM(chan2, 0, 0);
     //    pwm.setPWM(chan1,  val,0 );
     //    pwm.setPWM(chan2, 0, 4096 );
   }
   else
   {
     pwm.setPWM(chan2, 0, val);
-    pwm.setPWM(chan1, 4096, 0);
+    pwm.setPWM(chan1, 0, 0);
     //pwm.setPWM(chan2,  val,0 );
     //    pwm.setPWM(chan1, 0, 4096 );
   }
@@ -54,7 +54,7 @@ void DC_slider(Control *sender, int type)
 
   int16_t val;
   if (sender->value)
-    val = (sender->value).toInt() * 40 + 96;
+    val = (sender->value).toInt() * 4095 / 100;
   else
     val = 0;
 
@@ -63,22 +63,22 @@ void DC_slider(Control *sender, int type)
   switch(sender->id){
   case 2:
   {
-    setPWM(8, 9,dir , 4096 - val);
+    setPWM(8, 9,dir ,  val);
     break;
   }
   case 5:
   {
-    setPWM(10, 11,dir, 4096 - val);
+    setPWM(10, 11,dir, val);
     break;
   }
   case 8 :
   {
-       setPWM(12, 13, dir, 4096 - val);
+       setPWM(12, 13, dir,  val);
     break;
   }
   case 11:
   {
-      setPWM(14, 15, dir, 4096 - val);
+      setPWM(14, 15, dir,  val);
     break;
   }
   }
@@ -140,7 +140,7 @@ void setup(void)
   pwm.begin();
 
   pwm.setOscillatorFrequency(27000000);
-  pwm.setPWMFreq(50);
+  pwm.setPWMFreq(60);
 //  Wire.setClock(400000);
 
   WiFi.setHostname(hostname);
